@@ -1,0 +1,51 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons>
+            <ion-menu-button></ion-menu-button>
+        </ion-buttons>
+        <ion-title slot="primary">
+            Listado de Coches
+        </ion-title>
+    </ion-toolbar>
+</ion-header>
+<ion-content>
+
+    <ion-content>
+        <ion-card class="welcome-card">
+            <ion-slides pager="true" [options]="slideOpts">
+                <ion-slide *ngFor="let car of cars">
+                    <ion-card-content>
+                        <ion-title size="large" color="primary" background="primary">{{ car.marca }}</ion-title>
+
+                        <img src="{{ car.image }}" alt="h1"><br>
+
+                    </ion-card-content>
+                </ion-slide>
+            </ion-slides>
+        </ion-card>
+
+        <div class="ion-padding">
+            <ion-list>
+                <ion-list-header>
+                    <ion-title>
+                        Listado de Coches
+                    </ion-title>
+                </ion-list-header>
+                <div *ngIf="haveValues">
+                    <ion-item *ngFor="let car of cars" (click)="carTapped(car)">
+                        <ion-thumbnail slot="start">
+                            <img src="{{car.image}}">
+                        </ion-thumbnail>
+                        <ion-label> {{car.marca}}</ion-label>
+                    </ion-item>
+                </div>
+            </ion-list>
+        </div>
+
+    </ion-content>
+    <ion-toolbar>
+        <img src="/assets/images/4Vientos_iconoBlanco.PNG" />
+        <ion-title slot="primary">
+            TU Coche
+        </ion-title>
+    </ion-toolbar>
