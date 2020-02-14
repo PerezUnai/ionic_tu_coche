@@ -12,39 +12,34 @@ import { ICar } from '../share/interfaces';
 })
 export class EditPage implements OnInit {
 
-  id: number;
+  id: string;
   public car: ICar;
   carForm: FormGroup;
-  errorMessage: string;
 
   constructor(
-    private activatedroute: ActivatedRoute,
+    private activatedrouter: ActivatedRoute,
     private router: Router,
     private cardbService: CardbService,
     public toastController: ToastController) { }
 
   ngOnInit() {
+    this.id = this.activatedrouter.snapshot.params.id;
+    this.cardbService.getItem(this.id).then(
+      (data: ICar) => {
+        this.car = data;
+        this.displayProduct(this.car);
+      });
     this.carForm = new FormGroup({
-      marca: new FormControl(''),
-      modelo: new FormControl(''),
+      nombre: new FormControl(''),
+      ciudad: new FormControl(''),
       image: new FormControl(''),
-      puertas: new FormControl(''),
+      capacidad: new FormControl(''),
       precio: new FormControl(''),
     });
-    this.id = parseInt(this.activatedroute.snapshot.params['id']);
-    this.getCar(this.id);
-
+  
   }
 
-  getCar(id: number): void {
-    this.cardbService.getCarById(id)
-      .subscribe(
-        (car: ICar) => this.displayCar(car),
-        (error: any) => this.errorMessage = <any>error
-      );
-  }
-
-  displayCar(car: ICar): void {
+  displayProduct(car: ICar): void {
     if (this.carForm) {
       this.carForm.reset();
     }
@@ -52,17 +47,17 @@ export class EditPage implements OnInit {
 
     // Update the data on the form
     this.carForm.patchValue({
-      marca: this.car.marca,
-      modelo: this.car.modelo,
+      nombre: this.car.marca,
+      ciudad: this.car.modelo,
       image: this.car.image,
-      puertas: this.car.puertas,
+      capacidad: this.car.puertas,
       precio: this.car.precio
     });
   }
 
   async onSubmit() {
     const toast = await this.toastController.create({
-      header: 'Editar Coche',
+      header: 'Editar Car',
       position: 'top',
       buttons: [
         {
@@ -87,34 +82,17 @@ export class EditPage implements OnInit {
 
 
   editCar() {
-    if (this.carForm.valid) {
-      if (this.carForm.dirty) {
-        this.car = this.carForm.value;
-        this.car.id = this.id;
-
-        this.cardbService.updateCar(this.car)
-          .subscribe(
-            () => this.onSaveComplete(),
-            (error: any) => this.errorMessage = <any>error
-          );
-
-
-      } else {
-        this.onSaveComplete();
-      }
-    } else {
-      this.errorMessage = 'Please correct the validation errors.';
-    }
-  }
-
-  onSaveComplete(): void {
-    // Reset the form to clear the flags
-    this.carForm.reset();
-    this.router.navigate(['']);
+    this.cardbService.remove(this.car.id);
+    this.car = this.carForm.value;
+    let nextKey = this.car.marca.trim();
+    this.car.id = nextKey;
+    this.cardbService.setItem(nextKey, this.car);
+    console.warn(this.carForm.value);
+    this.cardbService.remove(this.car.id);
   }
   async removeRecord(id) {
     const toast = await this.toastController.create({
-      header: 'Eliminar coche',
+      header: 'Elimiar car',
       position: 'top',
       buttons: [
         {
@@ -122,10 +100,8 @@ export class EditPage implements OnInit {
           icon: 'delete',
           text: 'ACEPTAR',
           handler: () => {
-            this.cardbService.deleteCar(id).subscribe(
-              () => this.onSaveComplete(),
-              (error: any) => this.errorMessage = <any>error
-            );
+            this.cardbService.remove(id);
+            this.router.navigate(['home']);
           }
         }, {
           text: 'CANCELAR',

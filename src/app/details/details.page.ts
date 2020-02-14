@@ -12,7 +12,7 @@ import { ToastController } from '@ionic/angular';
 })
 export class DetailsPage implements OnInit {
 
-  id: number;
+  id: string;
   public car: ICar;
 
   constructor(
@@ -23,8 +23,8 @@ export class DetailsPage implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.id = parseInt(this.activatedroute.snapshot.params['id']);
-    this.cardbService.getCarById(this.id).subscribe(
+    this.id = this.activatedroute.snapshot.params.id;
+    this.cardbService.getItem(this.id).then(
       (data: ICar) => this.car = data
     );
   }
@@ -33,14 +33,9 @@ export class DetailsPage implements OnInit {
     this.router.navigate(['edit', car.id])
   }
 
-  onSaveComplete(): void {
-    // Reset the form to clear the flags
-    this.router.navigate(['']);
-  }
-
   async removeRecord(id) {
     const toast = await this.toastController.create({
-      header: 'Elimiar coche',
+      header: 'Eliminar coche',
       position: 'top',
       buttons: [
         {
@@ -48,9 +43,8 @@ export class DetailsPage implements OnInit {
           icon: 'delete',
           text: 'ACEPTAR',
           handler: () => {
-            this.cardbService.deleteCar(id).subscribe(
-              () => this.onSaveComplete(),
-            );
+            this.cardbService.remove(id);
+            this.router.navigate(['home']);
           }
         }, {
           text: 'CANCELAR',

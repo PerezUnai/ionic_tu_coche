@@ -12,7 +12,32 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
 
   public cars: ICar[];
-  haveValues: boolean = false;
+  caresinit: ICar[] = [
+    {
+      id: "1",
+      marca: "Coche1",
+      modelo: "Azul",
+      image: "",
+      puertas: 5,
+      precio: 2000
+    },
+    {
+      id: "2",
+      marca: "Coche2",
+      modelo: "Rojo",
+      image: "",
+      puertas: 3,
+      precio: 1790
+    },
+    {
+      id: "3",
+      marca: "Coche3",
+      modelo: "Verde",
+      image: "",
+      puertas: 5,
+      precio: 1874
+    }
+  ];
 
   constructor(private cardbService: CardbService, private route:
     Router) { }
@@ -24,28 +49,30 @@ export class HomePage implements OnInit {
 
   ngOnInit(): void {
     // If the database is empty set initial values
-    this.retrieveValues();
-    
+    this.inicialization();
   }
-
-  ionViewDidEnter(){
-    if(this.cars !== undefined){
+  ionViewDidEnter() {
+    // Remove elements if it already has values
+    if (this.cars !== undefined) {
       this.cars.splice(0);
     }
     this.retrieveValues();
   }
-
-  retrieveValues(){
-    this.cardbService.getCars().subscribe(
-      (data: ICar[]) => {
-        this.haveValues = false;
-        this.cars = data;
-        this.haveValues = true;
+  inicialization() {
+    if (this.cardbService.empty()) {
+      this.caresinit.forEach(car => {
+        this.cardbService.setItem(car.id, car);
       });
+    }
   }
-
+  retrieveValues() {
+    // Retrieve values
+    this.cardbService.getAll().then(
+      (data) => this.cars = data
+    );
+  }
   async carTapped(car) {
-    this.route.navigate(['details', car.id]);
+   this.route.navigate(['details', car.id]);
   }
 }
 

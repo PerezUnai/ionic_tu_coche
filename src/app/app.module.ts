@@ -10,10 +10,6 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { CarData } from './core/car-data';
-import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { CardbService } from './core/cardb.service';
 
 
 @NgModule({
@@ -23,10 +19,10 @@ import { CardbService } from './core/cardb.service';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
+    IonicStorageModule.forRoot(),
     ReactiveFormsModule,
     FormsModule,
-    HttpClientModule,
-    InMemoryWebApiModule.forRoot(CarData)
+
   ],
   providers: [
     CardbService,
