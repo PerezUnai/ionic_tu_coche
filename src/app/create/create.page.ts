@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { CardbService } from '../core/cardb.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { CarcrudService } from '../core/carcrud.service';
+import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { ICar } from '../share/interfaces';
 
@@ -15,12 +15,14 @@ export class CreatePage implements OnInit {
 
   car: ICar;
   carForm: FormGroup;
-  errorMessage: string;
-  id:number;
+  carMarca: string;
+  carModelo: string;
+  carImage:string;
+  carPuertas:number;
+  carPrecio:number;
 
   constructor(private router: Router,
-    private cardbService: CardbService,
-    private activatedroute: ActivatedRoute,
+    private carcrud: CarcrudService,
     public toastController: ToastController) { }
 
   ngOnInit() {
@@ -31,11 +33,10 @@ export class CreatePage implements OnInit {
       puertas: new FormControl(''),
       precio: new FormControl(''),
     });
-    this.id = parseInt(this.activatedroute.snapshot.params['productId']);
   }
   async onSubmit() {
     const toast = await this.toastController.create({
-      header: 'Guardar Coche',
+      header: 'Guardar coche',
       position: 'top',
       buttons: [
         {
@@ -58,29 +59,19 @@ export class CreatePage implements OnInit {
     toast.present();
   }
   saveCar() {
-    if (this.carForm.valid) {
-      if (this.carForm.dirty) {
-        this.car = this.carForm.value;
-        this.car.id = this.id;
-        
-        this.cardbService.createCar(this.car)
-          .subscribe(
-            () => this.onSaveComplete(),
-            (error: any) => this.errorMessage = <any>error
-          );
-        
-      } else {
-        this.onSaveComplete();
-      }
-    } else {
-      this.errorMessage = 'Please correct the validation errors.';
-    }
-  }
-  onSaveComplete(): void {
-    
-    // Reset the form to clear the flags
-    this.carForm.reset();
-    this.router.navigate(['']);
+    this.car = this.carForm.value;
+    let record = {};
+    record['marca'] = this.car.marca;
+    record['modelo'] = this.car.modelo;
+    record['puertas'] = this.car.puertas;
+    record['image'] = this.car.image;
+    record['precio'] = this.car.precio;
+    this.carcrud.create_car(record).then(resp => {
+      console.log(resp);
+    })
+      .catch(error => {
+        console.log(error);
+      });
   }
 }
 

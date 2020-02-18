@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ICar } from '../share/interfaces';
-import { CardbService } from '../core/cardb.service';
+import { CarcrudService } from '../core/carcrud.service';
 import { Router } from '@angular/router';
 
 
@@ -12,9 +12,8 @@ import { Router } from '@angular/router';
 export class HomePage implements OnInit {
 
   public cars: ICar[];
-  haveValues: boolean = false;
 
-  constructor(private cardbService: CardbService, private route:
+  constructor(private carcrudService: CarcrudService, private route:
     Router) { }
 
   slideOpts = {
@@ -29,19 +28,24 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter(){
-    if(this.cars !== undefined){
-      this.cars.splice(0);
-    }
     this.retrieveValues();
   }
 
   retrieveValues(){
-    this.cardbService.getCars().subscribe(
-      (data: ICar[]) => {
-        this.haveValues = false;
-        this.cars = data;
-        this.haveValues = true;
-      });
+    this.carcrudService.read_cars().subscribe(data => {
+      this.cars = data.map(e => {
+        return {
+          id: e.payload.doc.id,
+          isEdit: false,
+          nombre: e.payload.doc.data()['marca'],
+          capacidad: e.payload.doc.data()['puertas'],
+          ciudad: e.payload.doc.data()['modelo'],
+          image: e.payload.doc.data()['image'],
+          precio: e.payload.doc.data()['precio'],
+        };
+      })
+      console.log(this.cars);
+    });
   }
 
   async carTapped(car) {
