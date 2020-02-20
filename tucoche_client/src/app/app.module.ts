@@ -11,7 +11,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CarData } from './core/car-data';
 import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { CardbService } from './core/cardb.service';
 
@@ -26,7 +25,6 @@ import { CardbService } from './core/cardb.service';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(CarData)
   ],
   providers: [
     CardbService,
