@@ -1,5 +1,5 @@
 export interface ICar {
-    id:string;
+    id:number;
     marca:string;
     modelo:string;
     image:string;

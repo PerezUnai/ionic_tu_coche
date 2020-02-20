@@ -6,10 +6,10 @@
         <ion-button [routerLink]="['/home']" routerDirection="back" color="medium">
             <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
         </ion-button>
-        <ion-title slot="secondary">Editar un coche</ion-title>
+        <ion-title slot="secondary">Editar un nuevo coche</ion-title>
     </ion-toolbar>
 </ion-header>
-<ion-content *ngIf="car">
+<ion-content>
     <form [formGroup]="carForm" (ngSubmit)="onSubmit()">
         <ion-grid>
             <ion-row>
