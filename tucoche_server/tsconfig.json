@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+  /* Basic Options */
+  "target": "es6",
+  "module": "commonjs",
+  "outDir": "./",
+  "lib": [ "dom", "es2016" ],
+ 
+  /* Strict Type-Checking Options */
+  "strict": true,
+  "esModuleInterop": true,
+ 
+  /* Experimental Options */
+  "experimentalDecorators": true,
+  "emitDecoratorMetadata": true,
+  },
+  "exclude": [
+  "node_modules",
+  "client"
+  ]
+ }
