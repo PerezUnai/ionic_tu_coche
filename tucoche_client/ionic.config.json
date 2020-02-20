@@ -1,5 +1,7 @@
 {
-    "name": "tucoche_ionic",
-    "integrations": {},
-    "type": "angular"
+  "name": "tucoche_ionic",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
 }
