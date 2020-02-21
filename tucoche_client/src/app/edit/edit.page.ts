@@ -31,7 +31,7 @@ export class EditPage implements OnInit {
       puertas: new FormControl(''),
       precio: new FormControl(''),
     });
-    this.id = parseInt(this.activatedroute.snapshot.params['id']);
+    this.id = this.activatedroute.snapshot.params['id'];
     this.getCar(this.id);
 
   }

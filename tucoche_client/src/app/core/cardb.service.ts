@@ -8,14 +8,17 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CardbService {
-  private carsUrl = 'http://127.0.0.1/8000/products';
+  private carsUrl = 'http://127.0.0.1:8000/products';
 
   constructor(private http: HttpClient) { }
 
   getCars(): Observable<ICar[]> {
     return this.http.get<ICar[]>(this.carsUrl)
       .pipe(
-        tap(data => console.log(JSON.stringify(data))),
+        tap(data => {
+          console.log(JSON.stringify(data))
+        }
+        ),
         catchError(this.handleError)
       );
   }
