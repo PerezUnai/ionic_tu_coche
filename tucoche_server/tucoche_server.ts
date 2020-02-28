@@ -64,7 +64,9 @@ app.get('/', (req: any,res: any) =>{
 });
 app.get('/products', (req:any ,res:any) => {
     console.log("me han pedido la lista de coches");
-    res.json(getProducts());
+    let lista = getProducts()
+    console.log(lista);
+    res.json(lista);
 });
 function getProductsById(productId: number): any {
     let p:any;

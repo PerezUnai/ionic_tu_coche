@@ -8,7 +8,7 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class CardbService {
-  private carsUrl = 'http://127.0.0.1:8000/products';
+  private carsUrl = 'http://localhost:8000/products';
 
   constructor(private http: HttpClient) { }
 
